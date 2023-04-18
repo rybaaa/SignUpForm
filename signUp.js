@@ -89,7 +89,7 @@ function checkInputs() {
 function setError(input, message) {
     const formControl = input.parentElement;
     const error = formControl.querySelector('.input__error');
-    formControl.className = 'form__control error';
+    input.className = 'form__input error';
     error.innerText = message;
     error.style.visibility = 'visible'
 }
@@ -97,7 +97,7 @@ function setError(input, message) {
 function setSuccess(input) {
     const formControl = input.parentElement;
     const error = formControl.querySelector('.input__error');
-    formControl.className = 'form__control';
+    input.className = 'form__input';
     error.innerText = '';
     error.style.visibility = 'hidden'
 }
@@ -118,5 +118,5 @@ function validatePassword(password) {
 function validateDate(date) {
     const formDate = new Date(date);
     const currentDate = new Date();
-    return formDate.getTime() < currentDate.getTime();
+    return formDate.getTime() - 7200000 < currentDate.getTime();
 }
