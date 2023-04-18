@@ -53,7 +53,7 @@ function checkInputs() {
         setSuccess(email);
     }
     if (!validatePassword(passwordValue)) {
-        setError(password, 'At least 8 symbols, 1 capitalized symbol, 1 digit, 1 special symbol: !@#$%')
+        setError(password, 'At least 8 symbols, 1 capitalized letter, 1 digit, 1 special symbol: !@#$%')
     } else {
         setSuccess(password)
     }

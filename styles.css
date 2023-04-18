@@ -25,16 +25,15 @@ h2{
     align-items: center;
     background-color: #fff;
     box-shadow: 8px 8px 24px 0 rgba(66, 68, 90, 1);
-    width: 400px;
+    width: 500px;
     border-radius: 30px;
     padding: 30px 0;
 }
 
 @media screen and (max-width: 1000px) {
-    .form{
+    .form {
         width: 80%;
     }
-
 }
 
 .form__title {
@@ -45,7 +44,7 @@ h2{
 .form__block{
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
     width: 100%;
     align-items: center;
     justify-content: space-between;
@@ -65,11 +64,18 @@ h2{
 
 .form__control .input__error{
     position: absolute;
-    bottom: -18px;
+    top:52px;
     left: 0;
     color:red;
     font-size: 12px;
     visibility: hidden;
+}
+
+@media screen and (max-width: 1000px) {
+    .form__control .input__error {
+        top:53px;
+        font-size: 10px;
+    }
 }
 
 /*.form-control.error .input__error {*/
@@ -106,4 +112,12 @@ h2{
 
 .form__button:hover{
     background-color: #071a98
+}
+
+input[type="date"]
+{
+    display:block;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    min-height: 1.2em;
 }
