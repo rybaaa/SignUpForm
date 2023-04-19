@@ -1,4 +1,3 @@
-console.log('hello')
 const form = document.getElementById('form')
 const firstName = document.getElementById('first_name')
 const lastName = document.getElementById('last_name')
@@ -12,7 +11,7 @@ form.addEventListener('submit', (e) => {
     checkInputs()
 })
 
-function checkInputs() {
+async function checkInputs() {
     const firstNameValue = firstName.value.trim()
     const lastNameValue = lastName.value.trim()
     const emailValue = email.value.trim()
@@ -68,21 +67,27 @@ function checkInputs() {
     const errors = form.querySelectorAll('.error')
 
     if (!errors.length) {
-        fetch('https://jsonplaceholder.typicode.com/posts', {
-            method: 'POST',
-            body: JSON.stringify({
+        try {
+            const requestBody = {
                 firstName: firstNameValue,
                 lastName: lastNameValue,
                 dateOfBirth: dateValue,
                 email: emailValue,
                 password: passwordValue,
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-            .then((response) => response.json())
-            .then((json) => console.log(json));
+            };
+            console.log('Request Body: ', requestBody);
+            const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+                method: 'POST',
+                body: JSON.stringify(requestBody),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })
+            const result = await response.json()
+            console.log('Response: ', result)
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 
