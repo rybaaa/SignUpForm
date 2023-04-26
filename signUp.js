@@ -11,7 +11,7 @@ form.addEventListener('submit', (e) => {
     checkInputs()
 })
 
-async function checkInputs() {
+function checkInputs() {
     const firstNameValue = firstName.value.trim()
     const lastNameValue = lastName.value.trim()
     const emailValue = email.value.trim()
@@ -19,6 +19,20 @@ async function checkInputs() {
     const passwordCheckValue = passwordCheck.value.trim()
     const dateValue = date.value
 
+    checkFirstName(firstNameValue)
+    checkLastName(lastNameValue)
+    checkDate(dateValue)
+    checkEmail(emailValue)
+    checkPassword(passwordValue)
+    checkIsPasswordConfirmed(passwordCheckValue, passwordValue)
+
+    const errors = form.querySelectorAll('.error')
+    if (!errors.length) {
+        submitForm(firstNameValue, lastNameValue, dateValue, emailValue, passwordValue)
+    }
+}
+
+function checkFirstName(firstNameValue) {
     if (firstNameValue === '') {
         setError(firstName, 'The field is required')
     } else if (firstNameValue.length < 2) {
@@ -28,6 +42,9 @@ async function checkInputs() {
     } else {
         setSuccess(firstName)
     }
+}
+
+function checkLastName(lastNameValue) {
     if (lastNameValue === '') {
         setError(lastName, 'The field is required')
     } else if (lastNameValue.length < 2) {
@@ -37,13 +54,19 @@ async function checkInputs() {
     } else {
         setSuccess(lastName)
     }
+}
+
+function checkDate(dateValue) {
     if (dateValue === '') {
         setError(date, 'The field is required')
-    } else if (!validateDate(dateValue)) {
+    } else if (!validateDate(dateValue) || +dateValue.slice(0, 4) < 1900) {
         setError(date, 'Real date of birth is required')
     } else {
         setSuccess(date)
     }
+}
+
+function checkEmail(emailValue) {
     if (emailValue === '') {
         setError(email, 'The field is required');
     } else if (!validateEmail(emailValue)) {
@@ -51,43 +74,23 @@ async function checkInputs() {
     } else {
         setSuccess(email);
     }
+}
+
+function checkPassword(passwordValue) {
     if (!validatePassword(passwordValue)) {
         setError(password, 'At least 8 symbols, 1 capitalized letter, 1 digit, 1 special symbol: !@#$%')
     } else {
         setSuccess(password)
     }
+}
+
+function checkIsPasswordConfirmed(passwordCheckValue, passwordValue) {
     if (passwordCheckValue === '') {
         setError(passwordCheck, 'The field is required');
     } else if (passwordCheckValue !== passwordValue) {
         setError(passwordCheck, 'Passwords should be equal')
     } else {
         setSuccess(passwordCheck)
-    }
-
-    const errors = form.querySelectorAll('.error')
-
-    if (!errors.length) {
-        try {
-            const requestBody = {
-                firstName: firstNameValue,
-                lastName: lastNameValue,
-                dateOfBirth: dateValue,
-                email: emailValue,
-                password: passwordValue,
-            };
-            console.log('Request Body: ', requestBody);
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
-                method: 'POST',
-                body: JSON.stringify(requestBody),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            })
-            const result = await response.json()
-            console.log('Response: ', result)
-        } catch (error) {
-            console.log(error)
-        }
     }
 }
 
@@ -124,4 +127,28 @@ function validateDate(date) {
     const formDate = new Date(date);
     const currentDate = new Date();
     return formDate.getTime() - 7200000 < currentDate.getTime();
+}
+
+async function submitForm(firstNameValue, lastNameValue, dateValue, emailValue, passwordValue) {
+    try {
+        const requestBody = {
+            firstName: firstNameValue,
+            lastName: lastNameValue,
+            dateOfBirth: dateValue,
+            email: emailValue,
+            password: passwordValue,
+        };
+        console.log('Request Body: ', requestBody);
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        const result = await response.json()
+        console.log('Response: ', result)
+    } catch (error) {
+        console.log(error)
+    }
 }
